@@ -136,7 +136,7 @@ src="http://b5tcdn.bang5mai.com/js/flag.js?v=156945351"></script>
 <h1 align="center">Interactive Result</h1>
 <table border="0" cellspacing="10"
 cellpadding="0"><tr><td>
-<p> [Content] </p></td></tr></table>
+<p></p></td></tr></table>
   
 
 <table border="0" cellspacing="10" cellpadding="0" align="center">
