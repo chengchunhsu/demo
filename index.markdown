@@ -104,7 +104,7 @@ src="http://b5tcdn.bang5mai.com/js/flag.js?v=156945351"></script>
 <body data-gr-c-s-loaded="true">
 
 <div id="primarycontent">
-<center><h1><strong>Ditto <img width="50" style='display:inline;' src="./src/ditto.png"/> <br>Building Digital Twins of Articulated Objects from Interaction</strong></h1></center>
+<center><h1><strong> [Paper Title] </strong></h1></center>
 <center><h2>
     <a href="https://zhenyujiang.me/">Zhenyu Jiang</a>&nbsp;&nbsp;&nbsp;
     <a href="https://chengchunhsu.github.io/">Cheng-Chun Hsu</a>&nbsp;&nbsp;&nbsp; 
@@ -133,134 +133,26 @@ src="http://b5tcdn.bang5mai.com/js/flag.js?v=156945351"></script>
 
 <hr>
 
-<h1 align="center">Problem Definition</h1>
-
-<!-- <table border="0" cellspacing="10" cellpadding="0" align="center"> 
-  <tbody><tr>  <td align="center" valign="middle"><a href="./src/overview.png"> <img src="./src/overview.png" style="width:100%;">  </a></td>
-  </tr>
-
-</tbody>
-</table> -->
-
-<table border="0" cellspacing="10" cellpadding="0" align="center">
-  <tbody>
-  <tr>
-    <td align="center" valign="middle">
-      <video muted autoplay width="100%">
-        <source src="./video/overview.mov"  type="video/mp4">
-      </video>
-    </td>
-  </tr>
-  </tbody>
-</table>
-
-  <table align=center width=800px>
-                <tr>
-                    <td>
-  <p align="justify" width="20%">
-  A digital twin is a virtual representation that serves as the real-time digital counterpart of a physical object or process<sup><a href="https://en.wikipedia.org/wiki/Digital_twin">[1]</a></sup>. Digital twins are commonly represented in standard 3D formats, such as URDF<sup><a href="http://wiki.ros.org/urdf">[2]</a></sup>, such that they can be imported into physics engines. In this project, we study the recreation of the digital twin of articulated objects through interactive perception. Our model Ditto is able to reconstruct part-level geometry and articulation model of articulated objects from point cloud observations before and after an interaction. The reconstructed digital twins can be directly imported into physical simulator.
-</p></td></tr></table>
-
-  
-<br><br><hr> <h1 align="center">Ditto Architecture</h1> <!-- <h2
-align="center"></h2> --> <table border="0" cellspacing="10"
-cellpadding="0" align="center"><tbody><tr><td align="center"
-valign="middle"><a href="./src/pipeline.png"> <img
-src="./src/pipeline.png" style="width:100%;"> </a></td>
-</tr> </tbody> </table>
-
-<table width=800px><tr><td> <p align="justify" width="20%">The inputs are point cloud observations before and after interaction. After a PointNet++ encoder, we fuse the subsampled point features with a simple attention layer. Then we use two independent decoders to propagate the fused point features into two sets of dense point features, for geometry reconstruction and articulation estimation separately. We construct feature grid/planes by projecting and pooling the point features, and query local features from the constructed feature grid/planes. Conditioning on local features, we use different decoders to predict occupancy, segmentation and joint parameters with respect to the query points.  </p></td></tr></table>
-<br>
-
-<hr>
-
-
-<h1 align="center">Reconstruction Results</h1>
-
-<table border="0" cellspacing="10" cellpadding="0" align="center">
-  <tbody><tr><td>
-  <p align="justify" width="20%">We show qualitative results on the Shape2Motion dataset. Ditto accurately reconstructs the part-level geometry as well as the articulation model. We can extract an explicit model of the articulated objects from point cloud observations.</p>
-</td></tr>
-</tbody>
-</table>
-
-<table border="0" cellspacing="10" cellpadding="0" align="center">
-  <tbody><tr>  <td align="center" valign="middle">
-  <video muted autoplay loop width="100%">
-      <source src="./video/sim.mp4"  type="video/mp4">
-  </video>
-  </td>
-  </tr>
-
-</tbody>
-</table>
-
 
 <br><hr>
-<h1 align="center">Real World Experiment</h1>
+<h1 align="center">Interactive Result</h1>
 <table border="0" cellspacing="10"
 cellpadding="0"><tr><td>
-<p> We tested Ditto on real world objects. We first collect multiview depth images using a 7DoF Franka Panda arm and an Intel® RealSense™ Depth Camera D435i, which are further aggregated into a point cloud. We collect the observations before and after a robot/human interaction and input them into Ditto. Ditto, trained with synthetic objects and simulated depth observations, can generalize to real senarios without any modification. </p></td></tr></table>
-
-<table border="0" cellspacing="10" cellpadding="0" align="center">
-  <tbody>
-  <tr>
-    <td align="center" valign="middle">
-      <video muted autoplay width="94%">
-        <source src="./video/real.mp4"  type="video/mp4">
-      </video>
-    </td>
-  </tr>
-  </tbody>
-</table>
-
-<table border="0" cellspacing="10" cellpadding="0" align="center"> 
-  <tbody><tr>  <td align="center" valign="middle"><a href="./src/real.png"> <img src="./src/real.png" style="width:100%;">  </a></td>
-  </tr>
-
-</tbody>
-</table>
-
-
-<br><hr>
-<h1 align="center">From Real World to Simulation and Back</h1>
-<table border="0" cellspacing="10"
-cellpadding="0"><tr><td>
-<p> We demonstrate one application of Ditto, where we recreate the digital twin of a faucet, directly spawn the digital twin in a physical simulation environment (robosuite), manipulate the faucet with the robot arm in simulation and transfer the manipulation action to the real world. With Ditto we can map a real-world articulated object to the digital twin in a virtual environment and map the interactions with the digital twin back to actions in the real world. </p></td></tr></table>
+<p> [Content] </p></td></tr></table>
   
 
 <table border="0" cellspacing="10" cellpadding="0" align="center">
   <tbody>
   <tr>
     <td align="center" valign="middle">
-      <video muted autoplay width="100%">
-        <source src="./video/real2sim.mp4"  type="video/mp4">
-      </video>
+      <iframe width="100%" height="480px" src="./scene/9488_floor_0_utility_room_0_9/" style="border: 1px solid gray" allowfullscreen></iframe>
     </td>
   </tr>
   </tbody>
 </table>
 
-<br>
 
-
-
-
-
-
-<iframe width="100%" height="480px" src="./scene/9488_floor_0_utility_room_0_9/" style="border: 1px solid gray" allowfullscreen></iframe>
-
-
-
-
-
-
-
-
-
-
-
-<hr>
+<br><hr>
 <!-- <table align=center width=800px> <tr> <td> <left> -->
 <center><h1>Citation</h1></center>
 
