@@ -131,8 +131,6 @@ src="http://b5tcdn.bang5mai.com/js/flag.js?v=156945351"></script>
   </div>
 </p>
 
-<hr>
-
 
 <br><hr>
 <h1 align="center">Interactive Result</h1>
