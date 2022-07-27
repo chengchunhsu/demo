@@ -10,15 +10,15 @@ import TWEEN from './tween.js';
 let num_objects_curr = 0;
 let num_objects = 100;
 
-function onDoubleClick(event) {
-	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-	raycaster.setFromCamera( mouse, camera );
-	let intersections = raycaster.intersectObjects( [ threejs_objects['scene0451_01'] ] );
-	intersection = ( intersections.length ) > 0 ? intersections[ 0 ] : null;
-	//console.log(objs);
-	console.log(intersections);
-}
+// function onDoubleClick(event) {
+// 	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+// 	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+// 	raycaster.setFromCamera( mouse, camera );
+// 	let intersections = raycaster.intersectObjects( [ threejs_objects['scene0451_01'] ] );
+// 	intersection = ( intersections.length ) > 0 ? intersections[ 0 ] : null;
+// 	//console.log(objs);
+// 	console.log(intersections);
+// }
 
 function get_lines(properties){
     var geometry = new THREE.BufferGeometry();
@@ -465,6 +465,8 @@ function get_ground(){
 	return mesh;
 }
 
+
+
 function init_gui(objects){
 
 	let menuMap = new Map();
@@ -481,14 +483,16 @@ function init_gui(objects){
 			fol.open();
 
 		} else {
-			gui.add(value, 'visible').name(name).onChange(render);
+			// gui.add(value, 'visible').name(name).onChange(render);
+			if (name !== 'static_scene') {
+				gui.add(threejs_objects_state[name], 'changeState').name(name.replace("9488_floor_0_utility_room_0_9 ", "")).onChange(render);
+			}
 		}
 	}
 }
 
 function render() {
 	requestAnimationFrame(render);
-	interactionManager.update();
 	TWEEN.update();
     renderer.render(scene, camera);
 }
@@ -573,7 +577,40 @@ function create_threejs_objects(properties){
 		if (String(object_properties['type']).localeCompare('obj') == 0){
 			threejs_objects[object_name] = get_obj(object_properties);
 
-			threejs_objects_state[object_name] = false;
+			threejs_objects_state[object_name] = {}
+			threejs_objects_state[object_name].state = false;
+			threejs_objects_state[object_name].changeState = 
+				function() {
+					console.log(object_name);
+
+					var object = scene.getObjectByName(object_name);
+					let joint_type = threejs_objects_joint_type[object_name];
+					let screw_point = threejs_objects_screw_point[object_name];
+					let screw_axis = threejs_objects_screw_axis[object_name];
+					let state_factor = threejs_objects_state_factor[object_name];
+
+					if (threejs_objects_state[object_name].state == false){
+						console.log(object);
+						console.log(threejs_objects_joint_type);
+						console.log(screw_point);
+						console.log(screw_axis);
+						console.log(state_factor);
+						if (joint_type == 0){
+							object.rotateAroundWorldAxis(new THREE.Vector3(screw_point[0], screw_point[1], screw_point[2]), new THREE.Vector3(screw_axis[0], screw_axis[1], screw_axis[2]), Math.PI / 3 * state_factor);
+						} else if (joint_type == 1) {
+							object.translateOnAxis(new THREE.Vector3(screw_axis[0], screw_axis[1], screw_axis[2]), 0.05)
+						}
+						threejs_objects_state[object_name].state = true
+					}
+					else {
+						if (joint_type == 0){
+							object.rotateAroundWorldAxis(new THREE.Vector3(screw_point[0], screw_point[1], screw_point[2]), new THREE.Vector3(screw_axis[0], screw_axis[1], screw_axis[2]), -Math.PI / 3 * state_factor);
+						} else if (joint_type == 1) {
+							object.translateOnAxis(new THREE.Vector3(screw_axis[0], screw_axis[1], screw_axis[2]), -0.05)
+						}
+						threejs_objects_state[object_name].state = false
+					}
+				};
 			console.log(object_properties['joint_type'])
 			threejs_objects_joint_type[object_name] = object_properties['joint_type'];
 			threejs_objects_screw_point[object_name] = object_properties['screw_point'];
@@ -606,145 +643,8 @@ function create_threejs_objects(properties){
 
 function add_threejs_objects_to_scene(threejs_objects){
 	for (const [key, value] of Object.entries(threejs_objects)) {
-
-		if (key !== 'static_scene') {
-			value.addEventListener('mouseenter', (event) => {
-				console.log(event);
-				event.stopPropagation();
-
-				if (typeof event.target !== 'undefined'){
-					if (event.target.isObject3D && event.target.name !== 'static_scene' && event.target.children[0] !== 'undefined') {
-						event.target.children[0].traverse(
-							function(child) {
-								if (child.isMesh) {
-									child.material.color.set(0x63ff95);
-								}
-							});
-						document.body.style.cursor = 'pointer';
-					}
-				}
-				// event.target.material.color.set(0xff8800);
-				// document.body.style.cursor = 'pointer';
-			});
-
-			value.addEventListener('mouseleave', (event) => {
-				console.log(event);
-
-				if (typeof event.target !== 'undefined'){
-					if (event.target.isObject3D && event.target.name !== 'static_scene' && event.target.children[0] !== 'undefined') {
-						event.target.children[0].traverse(
-							function(child) {
-								if (child.isMesh) {
-									child.material.color.set(0xffffff);
-								}
-							});
-						document.body.style.cursor = 'default';
-					}
-				}
-				// event.target.material.color.set(event.target.defaultColor);
-				// document.body.style.cursor = 'default';
-			});
-
-			value.addEventListener('mouseover', (event) => {
-				console.log(event);
-				event.stopPropagation();
-
-				if (typeof event.target !== 'undefined'){
-					if (event.target.isObject3D && event.target.name !== 'static_scene' && event.target.children[0] !== 'undefined') {
-						event.target.children[0].traverse(
-							function(child) {
-								if (child.isMesh) {
-									child.material.color.set(0x63ff95);
-								}
-							});
-						document.body.style.cursor = 'pointer';
-					}
-				}
-				// event.target.material.color.set(0xff0000);
-				// document.body.style.cursor = 'pointer';
-			});
-
-			value.addEventListener('mouseout', (event) => {
-				console.log(event);
-
-				if (typeof event.target !== 'undefined'){
-					if (event.target.isObject3D && event.target.name !== 'static_scene' && event.target.children[0] !== 'undefined') {
-						event.target.children[0].traverse(
-							function(child) {
-								if (child.isMesh) {
-									child.material.color.set(0xffffff);
-								}
-							});
-						document.body.style.cursor = 'default';
-					}
-				}
-				// event.target.material.color.set(event.target.defaultColor);
-				// document.body.style.cursor = 'default';
-			});
-
-			value.addEventListener('mousedown', (event) => {
-				console.log(event);
-				event.stopPropagation();
-
-				if (typeof event.target !== 'undefined'){
-					if (event.target.isObject3D && event.target.name !== 'static_scene' && event.target.children[0] !== 'undefined') {
-						event.target.children[0].traverse(
-							function(child) {
-								if (child.isMesh) {
-									child.material.color.set(0xffffff);
-								}
-							});
-					}
-				}
-			});
-			
-			value.addEventListener('mouseup', (event) => {
-
-				if (event.intersected) {
-					if (typeof event.target !== 'undefined'){
-
-						let joint_type = threejs_objects_joint_type[event.target.name];
-						let screw_point = threejs_objects_screw_point[event.target.name];
-						let screw_axis = threejs_objects_screw_axis[event.target.name];
-						let state_factor = threejs_objects_state_factor[event.target.name];
-
-						if (threejs_objects_state[event.target.name] == false){
-
-							console.log(threejs_objects_joint_type);
-							console.log(screw_point);
-							console.log(screw_axis);
-							console.log(state_factor);
-							if (joint_type == 0){
-								event.target.rotateAroundWorldAxis(new THREE.Vector3(screw_point[0], screw_point[1], screw_point[2]), new THREE.Vector3(screw_axis[0], screw_axis[1], screw_axis[2]), Math.PI / 3 * state_factor);
-							} else if (joint_type == 1) {
-								event.target.translateOnAxis(new THREE.Vector3(screw_axis[0], screw_axis[1], screw_axis[2]), 0.05)
-							}
-							threejs_objects_state[event.target.name] = true
-						}
-						else {
-							if (joint_type == 0){
-								event.target.rotateAroundWorldAxis(new THREE.Vector3(screw_point[0], screw_point[1], screw_point[2]), new THREE.Vector3(screw_axis[0], screw_axis[1], screw_axis[2]), -Math.PI / 3 * state_factor);
-							} else if (joint_type == 1) {
-								event.target.translateOnAxis(new THREE.Vector3(screw_axis[0], screw_axis[1], screw_axis[2]), -0.05)
-							}
-							threejs_objects_state[event.target.name] = false
-						}
-
-					}
-				}
-				console.log(event);
-			});
-
-			value.addEventListener('click', (event) => {
-				console.log(event);
-				event.stopPropagation();
-			});
-		}
-
 		value.name = key
-
 		scene.add(value);
-		interactionManager.add(value);
 	}
 }
 
@@ -792,12 +692,6 @@ const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer({antialias: true});
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.01, 1000);
 var controls = '';
-
-const interactionManager = new InteractionManager(
-	renderer,
-	camera,
-	renderer.domElement
-);
 
 window.addEventListener('resize', onWindowResize, false);
 
