@@ -169,6 +169,7 @@ function get_obj(properties){
                 child.material = new THREE.MeshBasicMaterial( { // scene lights not required
                     vertexColors: THREE.VertexColors // you have them, use them
                 } );
+				child.material.side = THREE.DoubleSide; 
 			}
 		});
 		object.translateX(properties['translation'][0])
