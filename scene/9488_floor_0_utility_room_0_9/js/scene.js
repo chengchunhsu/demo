@@ -160,10 +160,15 @@ function get_obj(properties){
 				let r = properties['color'][0]
 				let g = properties['color'][1]
 				let b = properties['color'][2]
-				let colorString = "rgb("+r+","+g+", "+b+")"
-				child.material.color.set(new THREE.Color(colorString));
-				child.material.side = THREE.DoubleSide;
-				console.log('setting colors ' + r + " " + g + " " + b)
+				// let colorString = "rgb("+r+","+g+", "+b+")"
+				// child.material.color.set(new THREE.Color(colorString));
+				// child.material.side = THREE.DoubleSide; 
+				// console.log('setting colors ' + r + " " + g + " " + b)               
+
+				child.geometry.removeAttribute( 'uv' ); // you don't need it
+                child.material = new THREE.MeshBasicMaterial( { // scene lights not required
+                    vertexColors: THREE.VertexColors // you have them, use them
+                } );
 			}
 		});
 		object.translateX(properties['translation'][0])
@@ -503,55 +508,55 @@ function init(){
 
 	let hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
 	hemiLight.position.set(0, 20, 0);
-	//scene.add(hemiLight);
+	scene.add(hemiLight);
 
-	let dirLight = new THREE.DirectionalLight( 0xffffff );
-	dirLight.position.set(-10, 10, - 10);
-	dirLight.castShadow = true;
-	dirLight.shadow.camera.top = 2;
-	dirLight.shadow.camera.bottom = - 2;
-	dirLight.shadow.camera.left = - 2;
-	dirLight.shadow.camera.right = 2;
-	dirLight.shadow.camera.near = 0.1;
-	dirLight.shadow.camera.far = 40;
-	//scene.add(dirLight);
+	// let dirLight = new THREE.DirectionalLight( 0xffffff );
+	// dirLight.position.set(-10, 10, - 10);
+	// dirLight.castShadow = true;
+	// dirLight.shadow.camera.top = 2;
+	// dirLight.shadow.camera.bottom = - 2;
+	// dirLight.shadow.camera.left = - 2;
+	// dirLight.shadow.camera.right = 2;
+	// dirLight.shadow.camera.near = 0.1;
+	// dirLight.shadow.camera.far = 40;
+	// //scene.add(dirLight);
 
-	let intensity = 0.5;
-	let color = 0xffffff;
-	const spotLight1 = new THREE.SpotLight(color, intensity);
-	spotLight1.position.set(100, 1000, 0);
-	scene.add(spotLight1);
-	const spotLight2 = new THREE.SpotLight(color, intensity/3.0);
-	spotLight2.position.set(100, -1000, 0);
-	scene.add(spotLight2);
-	const spotLight3 = new THREE.SpotLight(color, intensity);
-	spotLight3.position.set(0, 100, 1000);
-	scene.add(spotLight3);
-	const spotLight4 = new THREE.SpotLight(color, intensity/3.0);
-	spotLight4.position.set(0, 100, -1000);
-	scene.add(spotLight4);
-	const spotLight5 = new THREE.SpotLight(color, intensity);
-	spotLight5.position.set(1000, 0, 100);
-	scene.add(spotLight5);
-	const spotLight6 = new THREE.SpotLight(color, intensity/3.0);
-	spotLight6.position.set(-1000, 0, 100);
-	scene.add(spotLight6);
+	// let intensity = 0.5;
+	// let color = 0xffffff;
+	// const spotLight1 = new THREE.SpotLight(color, intensity);
+	// spotLight1.position.set(100, 1000, 0);
+	// scene.add(spotLight1);
+	// const spotLight2 = new THREE.SpotLight(color, intensity/3.0);
+	// spotLight2.position.set(100, -1000, 0);
+	// scene.add(spotLight2);
+	// const spotLight3 = new THREE.SpotLight(color, intensity);
+	// spotLight3.position.set(0, 100, 1000);
+	// scene.add(spotLight3);
+	// const spotLight4 = new THREE.SpotLight(color, intensity/3.0);
+	// spotLight4.position.set(0, 100, -1000);
+	// scene.add(spotLight4);
+	// const spotLight5 = new THREE.SpotLight(color, intensity);
+	// spotLight5.position.set(1000, 0, 100);
+	// scene.add(spotLight5);
+	// const spotLight6 = new THREE.SpotLight(color, intensity/3.0);
+	// spotLight6.position.set(-1000, 0, 100);
+	// scene.add(spotLight6);
 
-	const spotLight7 = new THREE.SpotLight(color, intensity/6.0);
-	spotLight7.position.set(0.5, 0.5, 1000);
-	scene.add(spotLight7);
-	const spotLight8 = new THREE.SpotLight(color, intensity/6.0);
-	spotLight8.position.set(0.5, -0.5, 1000);
-	scene.add(spotLight8);
-	const spotLight9 = new THREE.SpotLight(color, intensity/6.0);
-	spotLight9.position.set(-0.5, -0.5, 1000);
-	scene.add(spotLight9);
-	const spotLight10 = new THREE.SpotLight(color, intensity/6.0);
-	spotLight10.position.set(-0.5, 0.5, 1000);
-	scene.add(spotLight10);
+	// const spotLight7 = new THREE.SpotLight(color, intensity/6.0);
+	// spotLight7.position.set(0.5, 0.5, 1000);
+	// scene.add(spotLight7);
+	// const spotLight8 = new THREE.SpotLight(color, intensity/6.0);
+	// spotLight8.position.set(0.5, -0.5, 1000);
+	// scene.add(spotLight8);
+	// const spotLight9 = new THREE.SpotLight(color, intensity/6.0);
+	// spotLight9.position.set(-0.5, -0.5, 1000);
+	// scene.add(spotLight9);
+	// const spotLight10 = new THREE.SpotLight(color, intensity/6.0);
+	// spotLight10.position.set(-0.5, 0.5, 1000);
+	// scene.add(spotLight10);
 
-	raycaster = new THREE.Raycaster();
-	raycaster.params.Points.threshold = 1.0;
+	// raycaster = new THREE.Raycaster();
+	// raycaster.params.Points.threshold = 1.0;
 }
 
 function create_threejs_objects(properties){
