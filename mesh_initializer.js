@@ -16,7 +16,7 @@ function get_obj(properties){
 	var container = new THREE.Object3D();
 
 	const loader = new GLTFLoader();
-	loader.load( './data/meshes/' + properties['filename'].replace(".obj", ".gltf"), function ( gltf ) {
+	loader.load( 'https://media.githubusercontent.com/media/chengchunhsu/demo/main/data/meshes/' + properties['filename'].replace(".obj", ".gltf"), function ( gltf ) {
 		gltf.scene.traverse( function( node ) {
 			if( node.material ) {
 				node.material.side = THREE.DoubleSide;
