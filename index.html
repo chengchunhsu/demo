@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>URF</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <!-- <script src="./build/three.min.js"></script> -->
+  <script type="module"  src="./mesh_renderer.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://unpkg.com/topojson@3"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r74/three.min.js"></script>
+
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+  <script src="https://d3js.org/topojson.v0.min.js"></script> -->
+
+</head>
+<body>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <h1>Paper Titles</h1>
+    </div>
+
+    <!-- <div class="row justify-content-center text-center">
+      <ul class="list-inline">
+        <li>
+          <a href="http://www.krematas.com/">
+            Konstantinos Rematas
+          </a>
+        </li>
+        <li>
+          <a href="https://andrewhliu.github.io/">
+            Andrew Liu
+          </a>
+        </li>
+        <li>
+          <a href="https://pratulsrinivasan.github.io/">
+            Pratul P. Srinivasan
+          </a>
+        </li>
+        <br>
+        <li>
+          <a href="https://jonbarron.info/">
+            Jonathan T. Barron
+          </a>
+        </li>
+        <li>
+          <a href="https://taiya.github.io/">
+            Andrea Tagliasacchi
+          </a>
+        </li>
+        <li>
+          <a href="https://www.cs.princeton.edu/~funk/">
+            Tom Funkhouser
+          </a>
+        </li>
+        <li>
+          <a href="https://sites.google.com/corp/view/vittoferrari">
+            Vittorio Ferrari
+          </a>
+        </li>
+        <br>
+      </ul>
+    </div>
+
+
+
+    <div class="row justify-content-md-center icons">
+      <div class="col">
+        <img src="images/logo_google.png"style="height:36px">
+      </div>
+    </div>
+
+    <div class="row justify-content-md-center icons">
+      <div class="col">
+        <h3>CVPR 2022</h3>
+      </div>
+    </div>
+
+    <div class="row justify-content-md-center text-center">
+      <div class="col-sm-2">
+        <a href="images/go_urf.pdf" target="_blank"><i class="fa fa-file-pdf-o fa-2x"></i></a>
+        <br>
+        Paper
+      </div>
+      <div class="col-sm-2">
+        <a href="https://arxiv.org/abs/2111.14643" target="_blank"><i class="fa fa-link fa-2x"></i></a>
+        <br>
+        Arxiv
+      </div>
+      <div class="col-sm-2">
+        <a href="https://www.youtube.com/watch?v=B973fam8Bag" target="_blank"><i class="fa fa-youtube-play fa-2x"></i></a>
+        <br>
+        Video
+      </div>
+    </div>
+
+    <div class="row justify-content-md-center">
+      <div class="col">
+        <img src="./images/teaser.png" class="myteaser">
+      </div>
+    </div>
+
+    <div class="row justify-content-md-center">
+      <img src="data/gifs/intro.gif" class="adjustable" id="teaser">
+    </div>
+
+    <h2>Abstract</h2>
+    <p>
+      The goal of this work is to perform 3D reconstruction and novel view synthesis
+      from data captured by scanning platforms commonly deployed for world mapping
+      in urban outdoor environments (e.g., Street View).
+      Given a sequence of posed RGB images and lidar sweeps acquired by cameras
+      and scanners moving through an outdoor scene, we produce a model from which
+      3D surfaces can be extracted and novel RGB images can be synthesized.
+      Our approach extends Neural Radiance Fields, which has been demonstrated
+      to synthesize realistic novel images for small scenes in controlled settings,
+      with new methods for leveraging asynchronously captured lidar data,
+      for addressing exposure variation between captured images,
+      and for leveraging predicted image segmentations to supervise densities on
+      rays pointing at the sky.
+      Each of these three extensions provides significant performance improvements
+      in experiments on Street View data. Our system produces state-of-the-art
+      3D surface reconstructions and synthesizes higher quality novel views in
+      comparison to both traditional methods (e.g.~COLMAP) and recent neural
+      representations (e.g.~Mip-NeRF).
+    </p>
+
+    <h2>Video</h2>
+    <div class="row justify-content-center">
+      <iframe width="640" height="360" frameborder="0"
+      src="https://www.youtube.com/embed/B973fam8Bag">
+      </iframe>
+    </div>
+
+    <h2>Novel View Synthesis</h2>
+    <p>Click on a city to visualize a novel camera trajectory (wait a bit to load). </p>
+    <div class="row justify-content-md-center icons" id="map">
+      <script type="text/javascript">
+        var container = document.getElementById( "teaser" );
+        var width = container.offsetWidth;
+        var height = width / (16/9);
+
+        var projection = d3.geoMercator()
+            .center([80, 0 ])
+            .scale(100)
+            .rotate([0,0]);
+
+        var svg = d3.select("#map").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        var path = d3.geoPath()
+            .projection(projection);
+
+        var g = svg.append("g");
+
+        // load and display the World
+
+        d3.json("data/world-110m2.json").then(function(topology) {
+          // load and display the cities
+          d3.csv("data/cities.csv").then(function(data) {
+              g.selectAll("circle")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("cx", function(d) {
+                        return projection([d.lon, d.lat])[0];
+                })
+                .attr("cy", function(d) {
+                        return projection([d.lon, d.lat])[1];
+                })
+                .attr("r", 7)
+                .style("fill", "red")
+                .on('click', function(d, i) {
+                    // console.log(d);
+                    d3.select(this)
+                      .transition()
+                      .attr('r', 15)
+                      .transition()
+                      .attr('r', 7);
+                    d3.select('#gifs').attr("src", function(dd) {
+                      return "data/gifs/"+d.city+".gif";}
+                    )
+                  });
+          });
+          g.selectAll("path")
+        .data(topojson.feature(topology, topology.objects.countries)
+            .features)
+        .enter().append("path")
+        .attr("d", path);
+
+          // g.selectAll("path")
+          // .data(topojson.object(topology, topology.objects.countries).geometries)
+          // .enter()
+          // .append("path")
+          // .attr("d", path)
+        });
+
+        svg.selectAll('circle')
+        .on('click', function(d, i) {
+            // transition the clicked element
+            // to have a radius of 20
+            d3.select(this)
+              .transition()
+              .attr('r', 15);
+          });
+
+          var zoom = d3.zoom()
+              .scaleExtent([1, 8])
+              .on('zoom', function(event) {
+                  g.selectAll('path')
+                  .attr('transform', d3.event.transform);
+                  g.selectAll("circle")
+                  .attr('transform', d3.event.transform);
+        });
+
+        svg.call(zoom);
+      </script>
+    </div>
+    <div class="row justify-content-md-center gif_vis">
+      <img src="data/gifs/sydney.gif" id='gifs' class="adjustable">
+    </div> -->
+
+    <h2>Mesh Reconstruction</h2>
+    <p>We use our method to reconstruct colored meshes, estimate the articulation models and visualize them on the browser (it may take some time to load).</p>
+    <div class="row justify-content-md-center icons">
+      <div id="canvas"></div>
+      <div id="gui"></div>
+    </div>
+
+    <!-- <h2>Citation</h2>
+    <div class="row justify-content-center">
+      <div class="col form-group">
+        <textarea id="bibtex" class="form-control" rows="7" readonly>
+@article{rematas2022urf,
+    title={Urban Radiance Fields},
+    author={Konstantinos Rematas and Andrew Liu and Pratul P. Srinivasan and Jonathan T. Barron and Andrea Tagliasacchi and Tom Funkhouser and Vittorio Ferrari},
+    journal={CVPR},
+    year={2022}
+}
+      </textarea>
+      </div>
+    </div>
+
+    <!-- <h2>Notes</h2> -->
+    <!-- <div class="footnote" style="font-size: 12px;">
+      The video was made by the authors using Blender and Adobe Premiere Pro. The interactive world map is based on <a href="https://d3js.org/">d3.js</a>.
+      For the mesh visualization we use <a href="https://threejs.org/">three.js</a>.
+    </div> -->
+
+
+    <!-- <div class="end"></div> -->
+</body>
+</html>
