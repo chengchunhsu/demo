@@ -1,4 +1,4 @@
-import * as THREE from './build/three.module.js';
+import * as THREE from 'three';
 import { OrbitControls } from './jsm/OrbitControls.js';
 import { WEBGL } from './jsm/WebGL.js';
 import { GUI } from './jsm/dat.gui.module.js';
