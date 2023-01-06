@@ -1,8 +1,8 @@
-import * as THREE from './demo/build/three.module.js';
-import { OrbitControls } from './demo/jsm/OrbitControls.js';
-import { WEBGL } from './demo/jsm/WebGL.js';
+import * as THREE from './build/three.module.js';
+import { OrbitControls } from './jsm/OrbitControls.js';
+import { WEBGL } from './jsm/WebGL.js';
 import { GUI } from 'https://threejsfundamentals.org/3rdparty/dat.gui.module.js';
-import { create_threejs_objects, add_threejs_objects_to_scene, init_gui } from './demo/mesh_initializer.js';
+import { create_threejs_objects, add_threejs_objects_to_scene, init_gui } from './mesh_initializer.js';
 
 
 if ( WEBGL.isWebGL2Available() === false ) {
