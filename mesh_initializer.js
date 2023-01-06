@@ -1,7 +1,5 @@
-import * as THREE from './build/three.module.js';
-import { OBJLoader } from './jsm/OBJLoader.js';
-import { MTLLoader } from './jsm/MTLLoader.js';
-import { GLTFLoader } from './jsm/GLTFLoader.js';
+import * as THREE from './demo/build/three.module.js';
+import { GLTFLoader } from './demo/jsm/GLTFLoader.js';
 
 
 // dict containing all objects of the scene
