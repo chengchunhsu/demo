@@ -1,5 +1,5 @@
-import * as THREE from './demo/build/three.module.js';
-import { GLTFLoader } from './demo/jsm/GLTFLoader.js';
+import * as THREE from './build/three.module.js';
+import { GLTFLoader } from './jsm/GLTFLoader.js';
 
 
 // dict containing all objects of the scene
