@@ -47,32 +47,29 @@ function init() {
   .then(() => console.log('done'));
 
   camera = new THREE.PerspectiveCamera( 45, w / h, 0.001, 2000 );
-	// camera.position.set(1.6812, -1.5227, -1.8727);
-	camera.position.set(1.6395, -1.6695, -1.9060);
+	camera.position.set(0.8328, -1.3226, -1.8372);
   camera.up.set(0, -1, 0);
 
   control = new OrbitControls( camera, renderer.domElement );
+  control.target = new THREE.Vector3(-1.2063, -1.0601, -0.5766);
+  
+  // camera setting
+  camera.rotation.x = 2.9394;
+  camera.rotation.y = 0.9913;
+  camera.rotation.z = 0.1698;
+	camera.updateProjectionMatrix();
 
   // scene
   scene = new THREE.Scene();
   scene.background =  new THREE.Color( 0xffffff );
 
-  const ambientLight = new THREE.AmbientLight( 0xffffff, 0.7 );
+  const ambientLight = new THREE.AmbientLight( 0xffffff, 1.2 );
   scene.add( ambientLight );
 
-  const pointLight = new THREE.PointLight( 0xffffff, 0.6 );
-  camera.add( pointLight );
-  scene.add( camera );
+  // const pointLight = new THREE.PointLight( 0xffffff, 0.6 );
+  // camera.add( pointLight );
+  // scene.add( camera );
   
-  // camera setting
-  // camera.rotation.x = 2.8633;
-  // camera.rotation.y = 0.9479;
-  // camera.rotation.z = 0.2279;
-  camera.rotation.x = 2.8569;
-  camera.rotation.y = 1.0158;
-  camera.rotation.z = 0.2437;
-	camera.updateProjectionMatrix();
-
 
   container.appendChild( renderer.domElement );
 
@@ -109,6 +106,7 @@ function render() {
   renderer.render( scene, camera );
   // console.log(camera.position)
   // console.log(camera.rotation)
+  // console.log(control.target)
     
 }
 

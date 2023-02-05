@@ -15,29 +15,56 @@ let threejs_objects_state_factor = {};
 function get_obj(properties){
 	var container = new THREE.Object3D();
 
-	const loader = new GLTFLoader();
-	loader.load( 'https://media.githubusercontent.com/media/chengchunhsu/demo/main/data/meshes/' + properties['filename'].replace(".obj", ".gltf"), function ( gltf ) {
-		gltf.scene.traverse( function( node ) {
-			if( node.material ) {
-				node.material.side = THREE.DoubleSide;
-			}
-		});
+	// const loader = new GLTFLoader();
+	// loader.load( 'https://media.githubusercontent.com/media/chengchunhsu/demo/main/data/meshes/' + properties['filename'].replace(".obj", ".gltf"), function ( gltf ) {
+	// 	gltf.scene.traverse( function( node ) {
+	// 		if( node.material ) {
+	// 			node.material.side = THREE.DoubleSide;
+	// 		}
+	// 	});
 		
-		gltf.scene.translateX(properties['translation'][0])
-		gltf.scene.translateY(properties['translation'][1])
-		gltf.scene.translateZ(properties['translation'][2])
+	// 	gltf.scene.translateX(properties['translation'][0])
+	// 	gltf.scene.translateY(properties['translation'][1])
+	// 	gltf.scene.translateZ(properties['translation'][2])
+
+	// 	const q = new THREE.Quaternion(
+	// 		properties['rotation'][1],
+	// 		properties['rotation'][2],
+	// 		properties['rotation'][3],
+	// 		properties['rotation'][0])
+	// 	gltf.scene.setRotationFromQuaternion(q)
+
+	// 	gltf.scene.scale.set(properties['scale'][0], properties['scale'][1], properties['scale'][2])
+
+	// 	container.add( gltf.scene );
+	// } );
+
+	const loader = new OBJLoader();
+	loader.load( 'https://media.githubusercontent.com/media/chengchunhsu/demo/main/data/meshes/' + properties['filename'], function ( object ) {
+
+        object.traverse( function( child ) {
+            if ( child instanceof THREE.Mesh ) {
+                child.material.side = THREE.DoubleSide;
+            }
+        } );
+        object.receiveShadow = false;
+        object.castShadow = false;
+
+		object.translateX(properties['translation'][0])
+		object.translateY(properties['translation'][1])
+		object.translateZ(properties['translation'][2])
 
 		const q = new THREE.Quaternion(
 			properties['rotation'][1],
 			properties['rotation'][2],
 			properties['rotation'][3],
 			properties['rotation'][0])
-		gltf.scene.setRotationFromQuaternion(q)
+			object.setRotationFromQuaternion(q)
 
-		gltf.scene.scale.set(properties['scale'][0], properties['scale'][1], properties['scale'][2])
-
-		container.add( gltf.scene );
-	} );
+			object.scale.set(properties['scale'][0], properties['scale'][1], properties['scale'][2])
+		
+		container.add(object);
+	});
 	
 
 	return container
