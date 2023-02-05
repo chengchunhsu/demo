@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { GLTFLoader } from './jsm/GLTFLoader.js';
+import { OBJLoader } from './jsm/OBJLoader.js';
 
 
 // dict containing all objects of the scene
